@@ -2,17 +2,17 @@ import NewsService from '../services/newsService';
 
 const resolvers = {
 
-    newslist: async () => await NewsService.get(),
+    newsList: async () => await NewsService.get(),
     newsGetById: async (args) => {
-        return await NewsService.getById(args)
+        return await NewsService.getById(args.id)
     },
 
-    addNews: async (args) => {
+    addNews: async (args) => {  
         return await NewsService.create(args)
     },
 
     deleteNews: async (args) => {
-        return await NewsService.delete(args)
+        return await NewsService.delete(args.id)
     },
 
     updateNews: async (args) => {

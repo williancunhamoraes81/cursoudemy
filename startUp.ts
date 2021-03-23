@@ -1,16 +1,15 @@
 import * as express from "express";
-import Database from "./infra/db";
 import * as bodyParser from "body-parser";
-import NewsController from "./controller/newsController";
 import * as cors from 'cors';
-import Auth from './infra/auth';
-import uploads from './infra/uploads';
 import * as compression from 'compression';
-import newsRouter from './router/newsRouter';
 import * as graphqlHTTP from 'express-graphql';
+
+import Database from "./infra/db";
+import Auth from './infra/auth'; 
+import uploads from './infra/uploads';
+import newsRouter from './router/newsRouter';
 import schemas from './graphql/schemas';
 import resolvers from './graphql/resolvers';
-import { graphql } from "graphql";
 
 
 class StartUp{ 
@@ -55,11 +54,11 @@ class StartUp{
             }
         })
 
-        this.app.use('/graphql', graphqlHTTP({
-            schemas: schemas,
+       this.app.use('/graphql', graphqlHTTP({
+            schema: schemas,
             rootValue: resolvers,
-            graphql: true
-        }))
+            graphiql: true          
+       }))
 
         //this.app.use(Auth.validate);
 

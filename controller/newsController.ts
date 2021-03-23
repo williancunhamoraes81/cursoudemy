@@ -7,11 +7,31 @@ import ImportFile from "../infra/importFile";
 
 class NewsController {
 
-    get(req, res) {
-        NewsService.get()
-            .then(news => Helper.sendResponse(res, HttpStatus.OK, news))
-            .catch(error => console.error.bind(console, `Error ${error}`));
+    get(req, res){
+        let client = redis.createClient();
+        
+        client.get('news', function(err,reply){
+           // if(reply){
+          //      console.log('redis')
+          //      Helper.sendResponse(res, HttpStatus.OK, JSON.parse(reply));
+          //  }else{
+                NewsService.get()
+                    .then(news => {
+                        console.log('db')
+                        client.set('news', JSON.stringify(news));
+                       // client.expire('news',5);
+                        Helper.sendResponse(res, HttpStatus.OK, news);
+                    })
+                    .catch(error => console.error.bind(console, `Error ${error}`));
+         //   }
+        })
     }
+
+   // get(req, res) {
+   //     NewsService.get()
+   //         .then(news => Helper.sendResponse(res, HttpStatus.OK, news))
+   //         .catch(error => console.error.bind(console, `Error ${error}`));
+   // }
 
     search(req, res) {
 
